@@ -1,0 +1,83 @@
+--- a/VRage.Scripting/VRage/Scripting/MyScriptWhitelist.cs
++++ b/VRage.Scripting/VRage/Scripting/MyScriptWhitelist.cs
+@@ -399,10 +399,18 @@ public class MyScriptWhitelist : IMyScriptBlacklist
+ 						typeSymbol = ((IArrayTypeSymbol)typeSymbol).ElementType;
+ 						type = type.GetElementType();
+ 					}
+-					if (!object.Equals(ResolveTypeSymbol(type), typeSymbol))
+-					{
+-						flag = false;
+-						break;
++					try
++					{
++						if (!object.Equals(ResolveTypeSymbol(type), typeSymbol))
++						{
++							flag = false;
++							break;
++						}
++					}
++					catch (MyWhitelistException)
++					{
++						flag = false;
++						break;
+ 					}
+ 				}
+ 				if (flag)
+@@ -439,7 +447,7 @@ public class MyScriptWhitelist : IMyScriptBlacklist
+ 		myWhitelistBatch.AllowMembers(MyWhitelistTarget.Both, typeof(ValueType).GetMethod("Equals"), typeof(ValueType).GetMethod("GetHashCode"), typeof(ValueType).GetMethod("ToString"));
+ 		myWhitelistBatch.AllowMembers(MyWhitelistTarget.Both, typeof(Environment).GetProperty("CurrentManagedThreadId", BindingFlags.Static | BindingFlags.Public), typeof(Environment).GetProperty("NewLine", BindingFlags.Static | BindingFlags.Public), typeof(Environment).GetProperty("ProcessorCount", BindingFlags.Static | BindingFlags.Public));
+ 		Type type = typeof(Type).Assembly.GetType("System.RuntimeType");
+-		myWhitelistBatch.AllowMembers(MyWhitelistTarget.Both, type.GetMethod("op_Inequality"), type.GetMethod("GetFields", new Type[1] { typeof(BindingFlags) }));
++		myWhitelistBatch.AllowMembers(MyWhitelistTarget.Both, type.GetMethod("GetFields", new Type[1] { typeof(BindingFlags) }));
+ 		myWhitelistBatch.AllowMembers(MyWhitelistTarget.Both, (from m in AllDeclaredMembers(typeof(Delegate))
+ 			where m.Name != "CreateDelegate"
+ 			select m).ToArray());
+@@ -611,8 +619,9 @@ public class MyScriptWhitelist : IMyScriptBlacklist
+ 	private void Register(MyWhitelistTarget target, INamespaceSymbol symbol, Type type)
+ 	{
+ 		string whitelistKey = symbol.GetWhitelistKey(TypeKeyQuantity.AllMembers);
+-		if (m_whitelist.ContainsKey(whitelistKey))
++		if (m_whitelist.TryGetValue(whitelistKey, out var value))
+ 		{
++			if (value == target) return;
+ 			throw new MyWhitelistException("Duplicate registration of the whitelist key " + whitelistKey + " retrieved from " + type);
+ 		}
+ 		m_whitelist.Add(whitelistKey, target);
+--- a/VRage.Scripting/VRage/Scripting/MyScriptCompiler.cs
++++ b/VRage.Scripting/VRage/Scripting/MyScriptCompiler.cs
+@@ -18,6 +18,7 @@ using VRage.FileSystem;
+ using VRage.Library.Compiler;
+ using VRage.Scripting.Analyzers;
+ using VRage.Scripting.Rewriters;
++using VRage.Utils;
+ 
+ namespace VRage.Scripting;
+ 
+@@ -82,7 +83,16 @@ public class MyScriptCompiler
+ 		AddUnblockableInGameExceptions(typeof(ScriptOutOfRangeException));
+ 		m_debugCompilationOptions = new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary, reportSuppressedDiagnostics: false, null, null, null, null, OptimizationLevel.Debug, checkOverflow: false, allowUnsafe: false, null, null, default(ImmutableArray<byte>), null, Platform.X64);
+ 		m_runtimeCompilationOptions = new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary, reportSuppressedDiagnostics: false, null, null, null, null, OptimizationLevel.Release, checkOverflow: false, allowUnsafe: false, null, null, default(ImmutableArray<byte>), null, Platform.X64);
+-		Whitelist = new MyScriptWhitelist(this);
++		try
++		{
++			Whitelist = new MyScriptWhitelist(this);
++		}
++		catch (Exception ex)
++		{
++			MyLog.Default.WriteLine($"VRage.Script.dll: VRage.Scripting.MyScriptCompiler: MyScriptWhitelist exception: {ex}");
++			MyLog.Default.WriteLine(ex.StackTrace);
++			throw;
++		}
+ 		m_inGameWhitelistDiagnosticAnalyzer = new WhitelistDiagnosticAnalyzer(Whitelist, MyWhitelistTarget.Ingame);
+ 		m_modApiWhitelistDiagnosticAnalyzer = new WhitelistDiagnosticAnalyzer(Whitelist, MyWhitelistTarget.ModApi);
+ 		m_conditionalParseOptions = new CSharpParseOptions(LanguageVersion.CSharp6, DocumentationMode.None);
+--- a/VRage.Scripting/VRage/Scripting/MyScriptWhitelist.cs
++++ b/VRage.Scripting/VRage/Scripting/MyScriptWhitelist.cs
+@@ -347,6 +347,7 @@ public class MyScriptWhitelist : IMyScriptBlacklist
+ 				IMethodSymbol methodSymbol = FindMethodOverload(list, methodParameters);
+ 				if (methodSymbol == null)
+ 				{
++					return;
+ 					throw new MyWhitelistException($"Cannot add {member} to the whitelist because its symbol variant could not be found.");
+ 				}
+ 				base.Whitelist.RegisterMember(target, methodSymbol, member);

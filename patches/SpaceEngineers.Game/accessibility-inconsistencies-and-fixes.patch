@@ -1,0 +1,22 @@
+--- a/SpaceEngineers.Game/SpaceEngineers/Game/GUI/MyGuiScreenMedicals.cs
++++ b/SpaceEngineers.Game/SpaceEngineers/Game/GUI/MyGuiScreenMedicals.cs
+@@ -44,7 +44,7 @@ namespace SpaceEngineers.Game.GUI;
+ public class MyGuiScreenMedicals : MyGuiScreenBase
+ {
+ 	[Serializable]
+-	private class MyPlanetInfo
++	protected class MyPlanetInfo
+ 	{
+ 
+ 		public long PlanetId;
+--- a/SpaceEngineers.Game/SpaceEngineers/Game/World/MySpaceRespawnComponent.cs
++++ b/SpaceEngineers.Game/SpaceEngineers/Game/World/MySpaceRespawnComponent.cs
+@@ -50,7 +50,7 @@ namespace SpaceEngineers.Game.World;
+ public class MySpaceRespawnComponent : MyRespawnComponentBase
+ {
+ 	[Serializable]
+-	private struct RespawnCooldownEntry
++	protected struct RespawnCooldownEntry
+ 	{
+ 
+ 		public int ControllerId;

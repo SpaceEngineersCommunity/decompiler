@@ -1,0 +1,60 @@
+--- a/Sandbox.Game/Sandbox/Game/Entities/MyReactor.cs
++++ b/Sandbox.Game/Sandbox/Game/Entities/MyReactor.cs
+@@ -395,15 +395,7 @@ public class MyReactor : MyFueledPowerProducer, IMyConveyorEndpointBlock, Sandbo
+ 		};
+ 	}
+ 
+-	[SpecialName]
+-	int IMyInventoryOwner.get_InventoryCount()
+-	{
+-		return base.InventoryCount;
+-	}
++	[SpecialName] int IMyInventoryOwner.InventoryCount => base.InventoryCount;
+ 
+-	[SpecialName]
+-	bool IMyInventoryOwner.get_HasInventory()
+-	{
+-		return base.HasInventory;
+-	}
++	[SpecialName] bool IMyInventoryOwner.HasInventory => base.HasInventory;
+ }
+--- a/Sandbox.Game/Sandbox/Game/Entities/Blocks/MyTargetDummyBlock.cs
++++ b/Sandbox.Game/Sandbox/Game/Entities/Blocks/MyTargetDummyBlock.cs
+@@ -996,15 +996,7 @@ public class MyTargetDummyBlock : MyFunctionalBlock, Sandbox.ModAPI.IMyTargetDum
+ 		return null;
+ 	}
+ 
+-	[SpecialName]
+-	int IMyInventoryOwner.get_InventoryCount()
+-	{
+-		return base.InventoryCount;
+-	}
++	[SpecialName] int IMyInventoryOwner.InventoryCount => base.InventoryCount;
+ 
+-	[SpecialName]
+-	bool IMyInventoryOwner.get_HasInventory()
+-	{
+-		return base.HasInventory;
+-	}
++	[SpecialName] bool IMyInventoryOwner.HasInventory => base.HasInventory;
+ }
+--- a/Sandbox.Game/Sandbox/Game/Weapons/MyShipDrill.cs
++++ b/Sandbox.Game/Sandbox/Game/Weapons/MyShipDrill.cs
+@@ -943,15 +943,7 @@ public class MyShipDrill : MyFunctionalBlock, IMyGunObject<MyToolBase>, IMyInven
+ 		return true;
+ 	}
+ 
+-	[SpecialName]
+-	int IMyInventoryOwner.get_InventoryCount()
+-	{
+-		return base.InventoryCount;
+-	}
++	[SpecialName] int IMyInventoryOwner.InventoryCount => base.InventoryCount;
+ 
+-	[SpecialName]
+-	bool IMyInventoryOwner.get_HasInventory()
+-	{
+-		return base.HasInventory;
+-	}
++	[SpecialName] bool IMyInventoryOwner.HasInventory => base.HasInventory;
+ }

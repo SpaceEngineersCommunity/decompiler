@@ -1,0 +1,11 @@
+--- a/VRage.Platform.Windows/VRage/Platform/Windows/Audio/MyPlatformAudio.cs
++++ b/VRage.Platform.Windows/VRage/Platform/Windows/Audio/MyPlatformAudio.cs
+@@ -12,7 +12,7 @@ internal class MyPlatformAudio : IMyPlatformAudio
+ 
+ 	public XAudio2 InitAudioEngine()
+ 	{
+-		m_audioEngine = new XAudio2(XAudio2Version.Version29);
++		m_audioEngine = new XAudio2(XAudio2Version.Version28);
+ 		return m_audioEngine;
+ 	}
+ 

@@ -1,0 +1,20 @@
+--- a/VRage.Render11/VRageRender/MyTextureData.cs
++++ b/VRage.Render11/VRageRender/MyTextureData.cs
+@@ -146,7 +146,7 @@ internal class MyTextureData : MyImmediateRC
+ 		case Format.R16_UInt:
+ 		case Format.R16_SNorm:
+ 		case Format.R16_SInt:
+-			MyImage.Save<Gray16>(stream, fileFormat, dataPointer, srcPitch, size, 2u);
++			MyImage.Save<L16>(stream, fileFormat, dataPointer, srcPitch, size, 2u);
+ 			break;
+ 		case Format.B5G6R5_UNorm:
+ 			MyImage.Save<Bgr565>(stream, fileFormat, dataPointer, srcPitch, size, 2u);
+@@ -163,7 +163,7 @@ internal class MyTextureData : MyImmediateRC
+ 		case Format.R8_SNorm:
+ 		case Format.R8_SInt:
+ 		case Format.A8_UNorm:
+-			MyImage.Save<Gray8>(stream, fileFormat, dataPointer, srcPitch, size, 1u);
++			MyImage.Save<L8>(stream, fileFormat, dataPointer, srcPitch, size, 1u);
+ 			break;
+ 		}
+ 	}

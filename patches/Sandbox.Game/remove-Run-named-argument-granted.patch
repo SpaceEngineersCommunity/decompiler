@@ -1,0 +1,11 @@
+--- a/Sandbox.Game/Sandbox/Game/Screens/MyGuiScreenSimpleNewGame.cs
++++ b/Sandbox.Game/Sandbox/Game/Screens/MyGuiScreenSimpleNewGame.cs
+@@ -718,7 +718,7 @@ public sealed class MyGuiScreenSimpleNewGame : MyGuiScreenBase
+ 		MyCampaignManager.Static.SwitchCampaign(scenario.Name, scenario.IsVanilla, scenario.PublishedFileId, scenario.PublishedServiceName, scenario.ModFolderPath, MyPlatformGameSettings.CONSOLE_COMPATIBLE);
+ 		if (!preferOnline || !MyGameService.IsActive)
+ 		{
+-			Run(granted: false);
++			Run(false);
+ 			return;
+ 		}
+ 		bool granted = false;

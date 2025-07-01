@@ -1,0 +1,220 @@
+--- a/VRage.EOS/VRage/EOS/MyEOSLobbyList.cs
++++ b/VRage.EOS/VRage/EOS/MyEOSLobbyList.cs
+@@ -11,126 +11,108 @@ namespace VRage.EOS;
+ 
+ internal class MyEOSLobbyList<T> where T : class
+ {
+-	[CompilerGenerated]
+-	private sealed class _003C_003Ec__DisplayClass32_0
+-	{
+-		public MyEOSLobbyList<T> _003C_003E4__this;
+-
+-		public List<T> lobbyList;
++	public List<T> lobbyList;
+ 
+-		public List<string> idList;
++	public List<string> idList;
+ 
+-		internal void _003CLoadServerListFromId_003Eb__0(Result x, (string ConnectingString, T Item)[] y)
++	internal void _003CLoadServerListFromId_003Eb__0(Result x, (string ConnectingString, T Item)[] y)
++	{
++		this.m_networking.InvokeOnMainThread(delegate
+ 		{
+-			_003C_003Ec__DisplayClass32_1 CS_0024_003C_003E8__locals2 = new _003C_003Ec__DisplayClass32_1
+-			{
+-				CS_0024_003C_003E8__locals1 = this,
+-				x = x,
+-				y = y
+-			};
+-			_003C_003E4__this.m_networking.InvokeOnMainThread(delegate
+-			{
+-				OnResults(CS_0024_003C_003E8__locals2.x, CS_0024_003C_003E8__locals2.y);
+-			});
+-			void Deliver()
++			OnResults(x, y);
++		});
++		void Deliver()
++		{
++			this.IsRequesting = false;
++			lock (this.m_lock)
+ 			{
+-				_003C_003E4__this.IsRequesting = false;
+-				lock (_003C_003E4__this.m_lock)
++				this.m_lobbyIds = idList;
++				this.m_lobbyList = lobbyList;
++				(string, T, bool) result;
++				while (this.m_pendingOps.TryDequeue<(string, T, bool)>(out result))
+ 				{
+-					_003C_003E4__this.m_lobbyIds = idList;
+-					_003C_003E4__this.m_lobbyList = lobbyList;
+-					(string, T, bool) result;
+-					while (_003C_003E4__this.m_pendingOps.TryDequeue<(string, T, bool)>(out result))
++					if (result.Item3)
++					{
++						this.AddServer(result.Item1, result.Item2);
++					}
++					else
+ 					{
+-						if (result.Item3)
+-						{
+-							_003C_003E4__this.AddServer(result.Item1, result.Item2);
+-						}
+-						else
+-						{
+-							_003C_003E4__this.RemoveServer(result.Item1, result.Item2);
+-						}
++						this.RemoveServer(result.Item1, result.Item2);
+ 					}
+ 				}
+-				_003C_003E4__this.Log($"Server list queried: {lobbyList.Count} result(s).");
+-				_003C_003E4__this.m_queryCompletion?.Invoke();
+ 			}
+-			void OnResults(Result result, (string ConnectingString, T Item)[] servers)
++			this.Log($"Server list queried: {lobbyList.Count} result(s).");
++			this.m_queryCompletion?.Invoke();
++		}
++		void OnResults(Result result, (string ConnectingString, T Item)[] servers)
++		{
++			if (result != Result.Success)
+ 			{
+-				if (result != Result.Success)
++				this.m_networking.Error($"Lobby search was not successful: {result}");
++			}
++			for (int i = 0; i < servers.Length; i++)
++			{
++				if (this.m_networking.VerboseLogging)
+ 				{
+-					_003C_003E4__this.m_networking.Error($"Lobby search was not successful: {result}");
++					this.Log("Server [" + servers[i].ConnectingString + "]: " + ((servers[i].Item == null) ? "Not Available" : "Loaded") + ".");
+ 				}
+-				for (int i = 0; i < servers.Length; i++)
++				if (servers[i].Item != null)
+ 				{
+-					if (_003C_003E4__this.m_networking.VerboseLogging)
+-					{
+-						_003C_003E4__this.Log("Server [" + servers[i].ConnectingString + "]: " + ((servers[i].Item == null) ? "Not Available" : "Loaded") + ".");
+-					}
+-					if (servers[i].Item != null)
+-					{
+-						lobbyList.Add(servers[i].Item);
+-					}
++					lobbyList.Add(servers[i].Item);
+ 				}
+-				Deliver();
+ 			}
++			Deliver();
+ 		}
+ 	}
+ 
+-	[CompilerGenerated]
+-	private sealed class _003C_003Ec__DisplayClass32_1
+-	{
+-		public Result x;
+-
+-		public (string ConnectingString, T Item)[] y;
++	public Result x;
+ 
+-		public _003C_003Ec__DisplayClass32_0 CS_0024_003C_003E8__locals1;
++	public (string ConnectingString, T Item)[] y;
+ 
+-		internal void _003CLoadServerListFromId_003Eb__3()
++	internal void _003CLoadServerListFromId_003Eb__3()
++	{
++		OnResults(x, y);
++		void Deliver()
+ 		{
+-			OnResults(x, y);
+-			void Deliver()
++			this.IsRequesting = false;
++			lock (this.m_lock)
+ 			{
+-				((_003C_003Ec__DisplayClass32_0)this)._003C_003E4__this.IsRequesting = false;
+-				lock (((_003C_003Ec__DisplayClass32_0)this)._003C_003E4__this.m_lock)
++				this.m_lobbyIds = this.idList;
++				this.m_lobbyList = this.lobbyList;
++				(string, T, bool) result;
++				while (this.m_pendingOps.TryDequeue<(string, T, bool)>(out result))
+ 				{
+-					((_003C_003Ec__DisplayClass32_0)this)._003C_003E4__this.m_lobbyIds = ((_003C_003Ec__DisplayClass32_0)this).idList;
+-					((_003C_003Ec__DisplayClass32_0)this)._003C_003E4__this.m_lobbyList = ((_003C_003Ec__DisplayClass32_0)this).lobbyList;
+-					(string, T, bool) result;
+-					while (((_003C_003Ec__DisplayClass32_0)this)._003C_003E4__this.m_pendingOps.TryDequeue<(string, T, bool)>(out result))
++					if (result.Item3)
++					{
++						this.AddServer(result.Item1, result.Item2);
++					}
++					else
+ 					{
+-						if (result.Item3)
+-						{
+-							((_003C_003Ec__DisplayClass32_0)this)._003C_003E4__this.AddServer(result.Item1, result.Item2);
+-						}
+-						else
+-						{
+-							((_003C_003Ec__DisplayClass32_0)this)._003C_003E4__this.RemoveServer(result.Item1, result.Item2);
+-						}
++						this.RemoveServer(result.Item1, result.Item2);
+ 					}
+ 				}
+-				((_003C_003Ec__DisplayClass32_0)this)._003C_003E4__this.Log($"Server list queried: {((_003C_003Ec__DisplayClass32_0)this).lobbyList.Count} result(s).");
+-				((_003C_003Ec__DisplayClass32_0)this)._003C_003E4__this.m_queryCompletion?.Invoke();
+ 			}
+-			void OnResults(Result result, (string ConnectingString, T Item)[] servers)
++			this.Log($"Server list queried: {this.lobbyList.Count} result(s).");
++			this.m_queryCompletion?.Invoke();
++		}
++		void OnResults(Result result, (string ConnectingString, T Item)[] servers)
++		{
++			if (result != Result.Success)
++			{
++				this.m_networking.Error($"Lobby search was not successful: {result}");
++			}
++			for (int i = 0; i < servers.Length; i++)
+ 			{
+-				if (result != Result.Success)
++				if (this.m_networking.VerboseLogging)
+ 				{
+-					((_003C_003Ec__DisplayClass32_0)this)._003C_003E4__this.m_networking.Error($"Lobby search was not successful: {result}");
++					this.Log("Server [" + servers[i].ConnectingString + "]: " + ((servers[i].Item == null) ? "Not Available" : "Loaded") + ".");
+ 				}
+-				for (int i = 0; i < servers.Length; i++)
++				if (servers[i].Item != null)
+ 				{
+-					if (((_003C_003Ec__DisplayClass32_0)this)._003C_003E4__this.m_networking.VerboseLogging)
+-					{
+-						((_003C_003Ec__DisplayClass32_0)this)._003C_003E4__this.Log("Server [" + servers[i].ConnectingString + "]: " + ((servers[i].Item == null) ? "Not Available" : "Loaded") + ".");
+-					}
+-					if (servers[i].Item != null)
+-					{
+-						((_003C_003Ec__DisplayClass32_0)this).lobbyList.Add(servers[i].Item);
+-					}
++					this.lobbyList.Add(servers[i].Item);
+ 				}
+-				Deliver();
+ 			}
++			Deliver();
+ 		}
+ 	}
+ 
+@@ -433,17 +415,17 @@ internal class MyEOSLobbyList<T> where T : class
+ 		{
+ 			if (result != Result.Success)
+ 			{
+-				((_003C_003Ec__DisplayClass32_0)this)._003C_003E4__this.m_networking.Error($"Lobby search was not successful: {result}");
++				this.m_networking.Error($"Lobby search was not successful: {result}");
+ 			}
+ 			for (int i = 0; i < servers.Length; i++)
+ 			{
+-				if (((_003C_003Ec__DisplayClass32_0)this)._003C_003E4__this.m_networking.VerboseLogging)
++				if (this.m_networking.VerboseLogging)
+ 				{
+-					((_003C_003Ec__DisplayClass32_0)this)._003C_003E4__this.Log("Server [" + servers[i].ConnectingString + "]: " + ((servers[i].Item == null) ? "Not Available" : "Loaded") + ".");
++					this.Log("Server [" + servers[i].ConnectingString + "]: " + ((servers[i].Item == null) ? "Not Available" : "Loaded") + ".");
+ 				}
+ 				if (servers[i].Item != null)
+ 				{
+-					((_003C_003Ec__DisplayClass32_0)this).lobbyList.Add(servers[i].Item);
++					this.lobbyList.Add(servers[i].Item);
+ 				}
+ 			}
+ 			Deliver();
