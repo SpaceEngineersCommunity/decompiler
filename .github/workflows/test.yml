@@ -1,0 +1,85 @@
+name: test
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+    - master
+  pull_request:
+    branches:
+    - master
+  schedule:
+    - cron: '0 0 * * 0' # weekly on sundays at 00:00
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: checkout
+        uses: actions/checkout@v4
+
+      - name: set up python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '>= 3.11'
+
+      - name: set up python dependencies
+        run: pip install -r requirements.txt
+
+      - name: setup dotnet 9 for decompiler
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 9
+
+      - name: setup dotnet 10 for ILSpy
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10
+          dotnet-quality: preview
+
+      - name: setup ILSpy
+        run: |
+          git clone --depth=1 'https://github.com/icsharpcode/ILSpy'
+          cd ILSpy
+          dotnet build --configuration Release ICSharpCode.ILSpyCmd/ICSharpCode.ILSpyCmd.csproj
+          # somehow .NET 10 no longer produces an executable so we need a wrapper
+          binaries=$(dirname "$PWD"/ICSharpCode.ILSpyCmd/bin/Release/*/ilspycmd.dll)
+          echo -e '#!/bin/bash\nd=$(dirname "${BASH_SOURCE[0]}")\nexec dotnet "$d/ilspycmd.dll" "$@"' > "$binaries/ilspycmd"
+          chmod +x "$binaries/ilspycmd"
+          echo "$PWD"/ICSharpCode.ILSpyCmd/bin/Release/*/ >> "$GITHUB_PATH"
+
+      - name: setup .NET Framework
+        run: |
+          curl -Lo net48.zip 'https://www.nuget.org/api/v2/package/Microsoft.NETFramework.ReferenceAssemblies.net48/1.0.3'
+          unzip net48.zip -d net48
+
+      - name: setup DepotDownloader
+        run: |
+          mkdir depotdownloader
+          cd depotdownloader
+          url=$(curl -s 'https://api.github.com/repos/SteamRE/DepotDownloader/releases/latest' | sed -n 's/.*"\(.*-linux-x64.zip\)"$/\1/p')
+          curl -Lo depotdownloader.zip "$url"
+          unzip depotdownloader.zip
+
+      - name: download Space Engineers Dedicated binaries
+        run: |
+          echo 'regex:^DedicatedServer64/' > filelist.txt
+          depotdownloader/DepotDownloader -app 298740 -depot 298741 -filelist filelist.txt -dir .
+
+      - name: decompile
+        run: |
+          mkdir src
+          cd src
+          ../decompile.py \
+            --netframework ../net48/build/.NETFramework/v4.8 \
+            --file ../DedicatedServer64/SpaceEngineersDedicated.exe \
+            --file ../DedicatedServer64/SpaceEngineersDedicatedUpdater.exe \
+            --file ../DedicatedServer64/VRageRemoteClient.exe
+
+      - name: recompile
+        run: |
+          cd src
+          for p in SpaceEngineersDedicated SpaceEngineersDedicatedUpdater VRageRemoteClient; do
+            dotnet build --property WarningLevel=0 --configuration Release -r win-x64 /p:EnableWindowsTargeting=true "$p/$p.csproj"
+          done
