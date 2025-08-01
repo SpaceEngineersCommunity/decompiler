@@ -1,0 +1,11 @@
+--- a/VRage/VRage/Network/EventAttribute.cs
++++ b/VRage/VRage/Network/EventAttribute.cs
+@@ -10,7 +10,7 @@ public class EventAttribute : Attribute
+ 
+ 	public readonly string Serialization;
+ 
+-	public EventAttribute(string serializationMethod = null, [CallerLineNumber] int order = 0)
++	public EventAttribute(string serializationMethod = null, int order = 0)
+ 	{
+ 		Order = order;
+ 		Serialization = serializationMethod;

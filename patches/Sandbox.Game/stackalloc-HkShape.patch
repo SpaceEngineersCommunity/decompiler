@@ -1,0 +1,18 @@
+--- a/Sandbox.Game/Sandbox/Game/Entities/Cube/MyGridShape.cs
++++ b/Sandbox.Game/Sandbox/Game/Entities/Cube/MyGridShape.cs
+@@ -175,13 +175,14 @@ public class MyGridShape : IDisposable
+ 
+ 	private void AddShapesFromCollector()
+ 	{
++		var shapes = new HkShape[255];
+ 		int num = 0;
+ 		for (int i = 0; i < m_blockCollector.ShapeInfos.Count; i++)
+ 		{
+ 			MyCubeBlockCollector.ShapeInfo shapeInfo = m_blockCollector.ShapeInfos[i];
+ 			HkShape[] obj = null;
+ 			Span<HkShape> span = default(Span<HkShape>);
+-			span = ((shapeInfo.Count >= 256) ? ((Span<HkShape>)(obj = new HkShape[shapeInfo.Count])) : stackalloc HkShape[shapeInfo.Count]);
++			span = shapeInfo.Count >= 256 ? (Span<HkShape>)(obj = new HkShape[shapeInfo.Count]) : shapes.AsSpan(0, shapeInfo.Count);
+ 			for (int j = 0; j < shapeInfo.Count; j++)
+ 			{
+ 				span[j] = m_blockCollector.Shapes[num + j];

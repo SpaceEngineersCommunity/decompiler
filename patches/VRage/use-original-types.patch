@@ -1,0 +1,32 @@
+--- a/VRage/VRage/Network/MyReplicationLayerBase.cs
++++ b/VRage/VRage/Network/MyReplicationLayerBase.cs
+@@ -1,5 +1,6 @@
+ using System;
+ using System.Collections.Generic;
++using System.IO;
+ using System.Reflection;
+ using VRageMath;
+ 
+@@ -148,10 +149,20 @@ public abstract class MyReplicationLayerBase
+ 		{
+ 			return;
+ 		}
++		var types = new Dictionary<string, Type>();
++		foreach (Type type in assembly.GetTypes())
++		{
++			types[type.FullName] = type;
++		}
++		var originalTypes = OriginalTypes.List[Path.GetFileName(assembly.Location)];
+ 		List<Type> list = null;
+-		Type[] types = assembly.GetTypes();
+-		foreach (Type type in types)
++		foreach (var t in originalTypes)
+ 		{
++			if (!types.ContainsKey(t))
++			{
++				throw new Exception($"VRage.dll: VRage.Network.MyReplicationLayerBase: original type {t} not found in {assembly.Location}");
++			}
++			var type = types[t];
+ 			if (!MyTypeTable.ShouldRegister(type))
+ 			{
+ 				continue;

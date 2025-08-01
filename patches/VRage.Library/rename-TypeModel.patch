@@ -1,0 +1,11 @@
+--- a/VRage.Library/VRage/Serialization/ProtoSerializer.cs
++++ b/VRage.Library/VRage/Serialization/ProtoSerializer.cs
+@@ -10,7 +10,7 @@ public class ProtoSerializer<T> : ISerializer<T>
+ 
+ 	public ProtoSerializer(TypeModel model = null)
+ 	{
+-		Model = model ?? TypeModel.Default;
++		Model = model ?? RuntimeTypeModel.Default;
+ 	}
+ 
+ 	public void Serialize(ByteStream destination, ref T data)

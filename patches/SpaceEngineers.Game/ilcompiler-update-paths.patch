@@ -1,0 +1,19 @@
+--- a/SpaceEngineers.Game/SpaceEngineers/Game/MySpaceGameCustomInitialization.cs
++++ b/SpaceEngineers.Game/SpaceEngineers/Game/MySpaceGameCustomInitialization.cs
+@@ -51,14 +51,13 @@ public class MySpaceGameCustomInitialization : MySandboxGame.IGameCustomInitiali
+ 		list.Add(Path.Combine(MyFileSystem.ExePath, "VRage.Input.dll"));
+ 		list.Add(Path.Combine(MyFileSystem.ExePath, "SpaceEngineers.ObjectBuilders.dll"));
+ 		list.Add(Path.Combine(MyFileSystem.ExePath, "SpaceEngineers.Game.dll"));
+-		list.Add(Path.Combine(MyFileSystem.ExePath, "System.Collections.Immutable.dll"));
+-		list.Add(Path.Combine(MyFileSystem.ExePath, "ProtoBuf.Net.Core.dll"));
++		list.Add(Path.Combine(MyFileSystem.ExePath, "protobuf-net.Core.dll"));
+ 		List<string> list2 = list;
+ 		Assembly[] assemblies = AppDomain.CurrentDomain.GetAssemblies();
+ 		foreach (Assembly assembly in assemblies)
+ 		{
+ 			string name = assembly.GetName().Name;
+-			if (name == "System.Runtime" || name == "System.Collections")
++			if (name == "System.Runtime" || name == "System.Collections" || name == "System.Collections.Immutable")
+ 			{
+ 				list2.Add(assembly.Location);
+ 			}

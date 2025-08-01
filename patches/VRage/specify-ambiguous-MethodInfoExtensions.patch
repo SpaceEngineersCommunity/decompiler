@@ -1,0 +1,10 @@
+--- a/VRage/VRage/Network/MyEventTable.cs
++++ b/VRage/VRage/Network/MyEventTable.cs
+@@ -6,6 +6,7 @@ using System.Linq.Expressions;
+ using System.Reflection;
+ using VRage.Library.Collections;
+ using VRage.Serialization;
++using MethodInfoExtensions = System.MethodInfoExtensions;
+ 
+ namespace VRage.Network;
+ 

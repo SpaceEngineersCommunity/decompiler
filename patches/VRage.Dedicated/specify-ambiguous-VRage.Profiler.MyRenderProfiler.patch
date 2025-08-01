@@ -1,0 +1,11 @@
+--- a/VRage.Dedicated/VRage/Dedicated/DedicatedServer.cs
++++ b/VRage.Dedicated/VRage/Dedicated/DedicatedServer.cs
+@@ -174,7 +174,7 @@ public static class DedicatedServer
+ 
+ 	internal static void RunMain(string instanceName, string customPath, bool isService, bool showConsole = true, bool checkAlive = false)
+ 	{
+-		MyRenderProfiler.ShallowProfileOnly = true;
++		VRage.Profiler.MyRenderProfiler.ShallowProfileOnly = true;
+ 		MySimpleProfiler.ENABLE_SIMPLE_PROFILER = false;
+ 		string userDataPath = (string.IsNullOrEmpty(customPath) ? GetUserDataPath(isService, instanceName) : customPath);
+ 		if (showConsole && Environment.UserInteractive)

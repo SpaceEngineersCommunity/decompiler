@@ -1,0 +1,46 @@
+--- a/VRage.Platform.Windows/VRage/Platform/Windows/Render/MyPlatformRender.cs
++++ b/VRage.Platform.Windows/VRage/Platform/Windows/Render/MyPlatformRender.cs
+@@ -49,7 +49,7 @@ internal static class MyPlatformRender
+ 
+ 	private static bool m_aftermathEnabled;
+ 
+-	private static Factory m_factory;
++	private static SharpDX.DXGI.Factory m_factory;
+ 
+ 	private const int BUFFER_COUNT = 2;
+ 
+@@ -209,7 +209,7 @@ internal static class MyPlatformRender
+ 	internal static void CreateAdaptersList()
+ 	{
+ 		List<MyAdapterInfo> adaptersList = new List<MyAdapterInfo>();
+-		Factory factory = GetFactory();
++		SharpDX.DXGI.Factory factory = GetFactory();
+ 		FeatureLevel[] featureLevels = new FeatureLevel[1] { FeatureLevel.Level_11_0 };
+ 		FeatureLevel[] featureLevels2 = new FeatureLevel[1] { FeatureLevel.Level_11_1 };
+ 		int num = 0;
+@@ -560,14 +560,14 @@ internal static class MyPlatformRender
+ 		return m_adapterInfoList;
+ 	}
+ 
+-	private static Factory GetFactory()
++	private static SharpDX.DXGI.Factory GetFactory()
+ 	{
+ 		return m_factory ?? (m_factory = new Factory1());
+ 	}
+ 
+ 	private static void GetAdapter(int adapterOrdinal, out Adapter adapter, out MyAdapterInfo adapterInfo)
+ 	{
+-		Factory factory = GetFactory();
++		SharpDX.DXGI.Factory factory = GetFactory();
+ 		MyAdapterInfo[] adaptersList = GetAdaptersList();
+ 		int adapterDeviceId = adaptersList[adapterOrdinal].AdapterDeviceId;
+ 		if (adapterDeviceId >= factory.Adapters.Length)
+@@ -794,7 +794,7 @@ internal static class MyPlatformRender
+ 				Usage = (Usage.ShaderInput | Usage.RenderTargetOutput),
+ 				SwapEffect = SwapEffect.Discard
+ 			};
+-			Factory factory = GetFactory();
++			SharpDX.DXGI.Factory factory = GetFactory();
+ 			try
+ 			{
+ 				m_swapchain = new SwapChain(factory, DeviceInstance, swapChainDescription);

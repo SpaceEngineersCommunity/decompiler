@@ -1,0 +1,11 @@
+--- a/VRage.Audio/VRage/Audio/MyXAudio2.cs
++++ b/VRage.Audio/VRage/Audio/MyXAudio2.cs
+@@ -752,7 +752,7 @@ public class MyXAudio2 : IMyAudio
+ 			}
+ 			else
+ 			{
+-				m_x3dAudio = new X3DAudio(m_channelMask, X3DAudioVersion.Version29);
++				m_x3dAudio = new X3DAudio(m_channelMask, X3DAudioVersion.Version28);
+ 			}
+ 			int num = text.IndexOf('\0');
+ 			if (num != -1)

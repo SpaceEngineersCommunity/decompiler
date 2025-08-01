@@ -1,0 +1,215 @@
+--- b/Sandbox.Game/Sandbox/Game/Components/MyEntityStatComponent.cs
++++ a/Sandbox.Game/Sandbox/Game/Components/MyEntityStatComponent.cs
+@@ -27,7 +27,7 @@ namespace Sandbox.Game.Components;
+ public class MyEntityStatComponent : MyEntityComponentBase
+ {
+ 	[Serializable]
+-	private struct StatInfo
++	protected struct StatInfo
+ 	{
+ 
+ 		public MyStringHash StatId;
+--- b/Sandbox.Game/Sandbox/Game/Entities/Blocks/MyContractBlock.cs
++++ a/Sandbox.Game/Sandbox/Game/Entities/Blocks/MyContractBlock.cs
+@@ -55,7 +55,7 @@ public class MyContractBlock : MyFunctionalBlock, IMyConveyorEndpointBlock, IMyM
+ 	}
+ 
+ 	[Serializable]
+-	private struct MyContractCreationDataWrapper_Deliver
++	protected struct MyContractCreationDataWrapper_Deliver
+ 	{
+ 
+ 		public int RewardMoney;
+@@ -68,7 +68,7 @@ public class MyContractBlock : MyFunctionalBlock, IMyConveyorEndpointBlock, IMyM
+ 	}
+ 
+ 	[Serializable]
+-	private struct MyContractCreationDataWrapper_ObtainAndDeliver
++	protected struct MyContractCreationDataWrapper_ObtainAndDeliver
+ 	{
+ 
+ 		public int RewardMoney;
+@@ -85,7 +85,7 @@ public class MyContractBlock : MyFunctionalBlock, IMyConveyorEndpointBlock, IMyM
+ 	}
+ 
+ 	[Serializable]
+-	private struct MyContractCreationDataWrapper_Find
++	protected struct MyContractCreationDataWrapper_Find
+ 	{
+ 
+ 		public int RewardMoney;
+@@ -100,7 +100,7 @@ public class MyContractBlock : MyFunctionalBlock, IMyConveyorEndpointBlock, IMyM
+ 	}
+ 
+ 	[Serializable]
+-	private struct MyContractCreationDataWrapper_Repair
++	protected struct MyContractCreationDataWrapper_Repair
+ 	{
+ 
+ 		public int RewardMoney;
+--- b/Sandbox.Game/Sandbox/Game/Entities/MyCubeBuilder.cs
++++ a/Sandbox.Game/Sandbox/Game/Entities/MyCubeBuilder.cs
+@@ -63,7 +63,7 @@ namespace Sandbox.Game.Entities;
+ public class MyCubeBuilder : MyBlockBuilderBase, IMyFocusHolder, IMyCubeBuilder
+ {
+ 	[Serializable]
+-	private struct BuildData
++	protected struct BuildData
+ 	{
+ 
+ 		public Vector3D Position;
+@@ -87,7 +87,7 @@ public class MyCubeBuilder : MyBlockBuilderBase, IMyFocusHolder, IMyCubeBuilder
+ 	}
+ 
+ 	[Serializable]
+-	private struct Author
++	protected struct Author
+ 	{
+ 
+ 		public long EntityId;
+@@ -102,7 +102,7 @@ public class MyCubeBuilder : MyBlockBuilderBase, IMyFocusHolder, IMyCubeBuilder
+ 	}
+ 
+ 	[Serializable]
+-	private struct GridSpawnRequestData
++	protected struct GridSpawnRequestData
+ 	{
+ 
+ 		public Author Author;
+--- b/Sandbox.Game/Sandbox/Game/Entities/MyCubeGrid.cs
++++ a/Sandbox.Game/Sandbox/Game/Entities/MyCubeGrid.cs
+@@ -127,7 +127,7 @@ public class MyCubeGrid : MyEntity, IMyGridConnectivityTest, IMyEventProxy, IMyE
+ 		SplitBlock
+ 	}
+ 
+-	internal enum MyTestDynamicReason
++	protected internal enum MyTestDynamicReason
+ 	{
+ 		NoReason,
+ 		GridCopied,
+@@ -2455,7 +2455,7 @@ public class MyCubeGrid : MyEntity, IMyGridConnectivityTest, IMyEventProxy, IMyE
+ 
+ 	internal bool EnableSmallToLargeConnections => m_enableSmallToLargeConnections;
+ 
+-	internal MyTestDynamicReason TestDynamic
++	protected internal MyTestDynamicReason TestDynamic
+ 	{
+ 		get
+ 		{
+--- b/Sandbox.Game/Sandbox/Game/Entities/MySphericalNaturalGravityComponent.cs
++++ a/Sandbox.Game/Sandbox/Game/Entities/MySphericalNaturalGravityComponent.cs
+@@ -21,7 +21,7 @@ public class MySphericalNaturalGravityComponent : MyGravityProviderComponent, IM
+ 
+ 	private float m_gravityLimitSq;
+ 
+-	public Vector3D Position { get; private set; }
++	public Vector3D Position { get; internal set; }
+ 
+ 	Vector3D IMyNaturalGravityComponent.Position
+ 	{
+--- b/Sandbox.Game/Sandbox/Game/Entities/MyVoxelBase.cs
++++ a/Sandbox.Game/Sandbox/Game/Entities/MyVoxelBase.cs
+@@ -33,7 +33,7 @@ namespace Sandbox.Game.Entities;
+ public abstract class MyVoxelBase : MyEntity, IMyVoxelDrawable, IMyVoxelBase, VRage.ModAPI.IMyEntity, VRage.Game.ModAPI.Ingame.IMyEntity, IMyDecalProxy, IMyEventProxy, IMyEventOwner
+ {
+ 	[Serializable]
+-	private struct MyRampShapeParams
++	protected struct MyRampShapeParams
+ 	{
+ 
+ 		public BoundingBoxD Box;
+@@ -48,7 +48,7 @@ public abstract class MyVoxelBase : MyEntity, IMyVoxelDrawable, IMyVoxelBase, VR
+ 	}
+ 
+ 	[Serializable]
+-	private struct MyCapsuleShapeParams
++	protected struct MyCapsuleShapeParams
+ 	{
+ 
+ 		public Vector3D A;
+--- b/Sandbox.Game/Sandbox/Game/GameSystems/CoordinateSystem/MyCoordinateSystem.cs
++++ a/Sandbox.Game/Sandbox/Game/GameSystems/CoordinateSystem/MyCoordinateSystem.cs
+@@ -25,7 +25,7 @@ public class MyCoordinateSystem : MySessionComponentBase
+ 	/// Used for transporting information about coord system to clients.
+ 	/// </summary>
+ 	[Serializable]
+-	private struct MyCreateCoordSysBuffer
++	protected struct MyCreateCoordSysBuffer
+ 	{
+ 
+ 		public long Id;
+--- b/Sandbox.Game/Sandbox/Game/Gui/MyGuiScreenAdminMenu.cs
++++ a/Sandbox.Game/Sandbox/Game/Gui/MyGuiScreenAdminMenu.cs
+@@ -85,7 +85,7 @@ public class MyGuiScreenAdminMenu : MyGuiScreenDebugBase
+ 	}
+ 
+ 	[Serializable]
+-	internal struct AdminSettings
++	protected internal struct AdminSettings
+ 	{
+ 
+ 		public MyTrashRemovalFlags Flags;
+--- b/Sandbox.Game/Sandbox/Game/Gui/MyGuiScreenDebugNetwork.cs
++++ a/Sandbox.Game/Sandbox/Game/Gui/MyGuiScreenDebugNetwork.cs
+@@ -58,7 +58,7 @@ internal class MyGuiScreenDebugNetwork : MyGuiScreenDebugBase
+ 	}
+ 
+ 	[Serializable]
+-	private struct Layer
++	protected struct Layer
+ 	{
+ 		[Serializable]
+ 		public struct Entity
+--- b/Sandbox.Game/Sandbox/Game/Gui/MyTerminalInfoController.cs
++++ a/Sandbox.Game/Sandbox/Game/Gui/MyTerminalInfoController.cs
+@@ -35,7 +35,7 @@ namespace Sandbox.Game.Gui;
+ internal class MyTerminalInfoController : MyTerminalController
+ {
+ 	[Serializable]
+-	private struct GridBuiltByIdInfo
++	protected struct GridBuiltByIdInfo
+ 	{
+ 
+ 		public string GridName;
+--- b/Sandbox.Game/Sandbox/Game/Multiplayer/MyGpsCollection.cs
++++ a/Sandbox.Game/Sandbox/Game/Multiplayer/MyGpsCollection.cs
+@@ -30,7 +30,7 @@ namespace Sandbox.Game.Multiplayer;
+ public class MyGpsCollection : IMyGpsCollection
+ {
+ 	[Serializable]
+-	private struct AddMsg
++	protected struct AddMsg
+ 	{
+ 
+ 		public long IdentityId;
+@@ -68,7 +68,7 @@ public class MyGpsCollection : IMyGpsCollection
+ 	}
+ 
+ 	[Serializable]
+-	private struct ModifyMsg
++	protected struct ModifyMsg
+ 	{
+ 
+ 		public long IdentityId;
+--- b/Sandbox.Game/Sandbox/Game/SessionComponents/MyHighlightSystem.cs
++++ a/Sandbox.Game/Sandbox/Game/SessionComponents/MyHighlightSystem.cs
+@@ -62,7 +62,7 @@ public class MyHighlightSystem : MySessionComponentBase
+ 	}
+ 
+ 	[Serializable]
+-	private struct HighlightMsg
++	protected struct HighlightMsg
+ 	{
+ 
+ 		public MyHighlightData Data;
+--- b/Sandbox.Game/Sandbox/Game/World/MyBlockLimits.cs
++++ a/Sandbox.Game/Sandbox/Game/World/MyBlockLimits.cs
+@@ -58,7 +58,7 @@ public class MyBlockLimits
+ 	}
+ 
+ 	[Serializable]
+-	private struct TransferMessageData
++	protected struct TransferMessageData
+ 	{
+ 
+ 		public long EntityId;

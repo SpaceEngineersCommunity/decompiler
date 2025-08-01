@@ -1,0 +1,11 @@
+--- a/VRage.Game/VRage/Game/ObjectBuilders/MyObjectBuilder_AnimationLayer.cs
++++ b/VRage.Game/VRage/Game/ObjectBuilders/MyObjectBuilder_AnimationLayer.cs
+@@ -15,8 +15,6 @@ public class MyObjectBuilder_AnimationLayer : MyObjectBuilder_Base
+ 	[ProtoContract]
+ 	public enum MyLayerMode
+ 	{
+-		// error: nested types are not permitted in C#.
+-		,
+ 		Replace,
+ 		Add
+ 	}

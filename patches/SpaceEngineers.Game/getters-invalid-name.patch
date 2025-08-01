@@ -1,0 +1,12 @@
+--- a/SpaceEngineers.Game/SpaceEngineers/Game/Entities/Blocks/MyFlightMovementBlock.cs
++++ b/SpaceEngineers.Game/SpaceEngineers/Game/Entities/Blocks/MyFlightMovementBlock.cs
+@@ -1557,8 +1557,5 @@ public sealed class MyFlightMovementBlock : MyFunctionalBlock, IMyComponentOwner
+ 	}
+ 
+ 	[SpecialName]
+-	MyCubeGrid IMyShipControl.get_CubeGrid()
+-	{
+-		return base.CubeGrid;
+-	}
++	MyCubeGrid IMyShipControl.CubeGrid => base.CubeGrid;
+ }

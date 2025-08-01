@@ -1,0 +1,11 @@
+--- a/VRage.Render/VRageRender/Animations/MyConstProperty.cs
++++ b/VRage.Render/VRageRender/Animations/MyConstProperty.cs
+@@ -178,7 +178,7 @@ public class MyConstProperty<T> : IMyConstProperty
+ 	public virtual void DeserializeFromObjectBuilder(GenerationProperty property)
+ 	{
+ 		m_name = property.Name;
+-		m_value = (T)(property.Type switch
++		m_value = (T)(object)(property.Type switch
+ 		{
+ 			"Float" => property.ValueFloat, 
+ 			"Vector3" => property.ValueVector3, 

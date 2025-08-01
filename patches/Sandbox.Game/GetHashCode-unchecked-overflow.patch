@@ -1,0 +1,14 @@
+--- a/Sandbox.Game/Sandbox/Game/SessionComponents/MyHighlightSystem.cs
++++ b/Sandbox.Game/Sandbox/Game/SessionComponents/MyHighlightSystem.cs
+@@ -54,7 +54,10 @@ public class MyHighlightSystem : MySessionComponentBase
+ 
+ 		public override int GetHashCode()
+ 		{
+-			return (-1285426570 * -1521134295 + EntityId.GetHashCode()) * -1521134295 + EqualityComparer<string>.Default.GetHashCode(SectionName);
++			unchecked
++			{
++				return (-1285426570 * -1521134295 + EntityId.GetHashCode()) * -1521134295 + EqualityComparer<string>.Default.GetHashCode(SectionName);
++			}
+ 		}
+ 	}
+ 

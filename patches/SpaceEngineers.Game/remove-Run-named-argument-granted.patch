@@ -1,0 +1,22 @@
+--- a/SpaceEngineers.Game/Sandbox/Game/Screens/MyGuiScreenScenarioSelectionCustomizeScreen.cs
++++ b/SpaceEngineers.Game/Sandbox/Game/Screens/MyGuiScreenScenarioSelectionCustomizeScreen.cs
+@@ -1545,7 +1545,7 @@ public class MyGuiScreenScenarioSelectionCustomizeScreen : MyGuiScreenBase
+ 		MyCampaignManager.Static.SwitchCampaign(scenario.Name, scenario.IsVanilla, scenario.PublishedFileId, scenario.PublishedServiceName, scenario.ModFolderPath, MyPlatformGameSettings.CONSOLE_COMPATIBLE);
+ 		if (!preferOnline || !MyGameService.IsActive)
+ 		{
+-			Run(granted: false);
++			Run(false);
+ 			return;
+ 		}
+ 		bool granted = false;
+--- a/SpaceEngineers.Game/Sandbox/Game/Screens/MyGuiScreenNewGameScenarioSelection.cs
++++ b/SpaceEngineers.Game/Sandbox/Game/Screens/MyGuiScreenNewGameScenarioSelection.cs
+@@ -1734,7 +1734,7 @@ public sealed class MyGuiScreenNewGameScenarioSelection : MyGuiScreenBase
+ 		MyCampaignManager.Static.SwitchCampaign(scenario.Name, scenario.IsVanilla, scenario.PublishedFileId, scenario.PublishedServiceName, scenario.ModFolderPath, MyPlatformGameSettings.CONSOLE_COMPATIBLE);
+ 		if (!preferOnline || !MyGameService.IsActive)
+ 		{
+-			Run(granted: false);
++			Run(false);
+ 			return;
+ 		}
+ 		bool granted = false;

@@ -1,0 +1,10 @@
+--- a/SpaceEngineers.Game/SpaceEngineers/Game/SpaceEngineersGame.cs
++++ b/SpaceEngineers.Game/SpaceEngineers/Game/SpaceEngineersGame.cs
+@@ -615,6 +615,7 @@ public class SpaceEngineersGame : MySandboxGame
+ 
+ 	public static void SetupAnalytics()
+ 	{
++		return; // disable analytics
+ 		MyLog.Default.WriteLine("SpaceEngineersGame.SetupAnalytics - START");
+ 		string projectId = "27bae5ba5219bcd64ddbf83113eabb30:d04e0431f97f90fae73b9d6ea99fc9746695bd11";
+ 		IMyAnalytics myAnalytics = MyVRage.Platform.InitAnalytics(projectId, 1206032.ToString());

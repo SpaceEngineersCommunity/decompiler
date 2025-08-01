@@ -1,0 +1,11 @@
+--- a/VRage.Platform.Windows/VRage/Platform/Windows/Serialization/DynamicTypeModel.cs
++++ b/VRage.Platform.Windows/VRage/Platform/Windows/Serialization/DynamicTypeModel.cs
+@@ -20,7 +20,7 @@ internal class DynamicTypeModel : IProtoTypeModel
+ 
+ 	private void CreateTypeModel()
+ 	{
+-		m_typeModel = RuntimeTypeModel.Create(setDefault: true);
++		m_typeModel = RuntimeTypeModel.Create();
+ 		m_typeModel.AutoAddMissingTypes = true;
+ 		m_typeModel.UseImplicitZeroDefaults = false;
+ 	}

@@ -1,0 +1,10 @@
+--- a/VRage.Dedicated/VRage/Dedicated/DedicatedServer.cs
++++ b/VRage.Dedicated/VRage/Dedicated/DedicatedServer.cs
+@@ -429,6 +429,7 @@ public static class DedicatedServer
+ 
+ 	public static void SetupAnalytics()
+ 	{
++		return; // disable analytics
+ 		MyPerGameSettings.BasicGameInfo.AnalyticId = (MySandboxGame.ConfigDedicated.ConsoleCompatibility ? "SEXDS" : "SEDS");
+ 		string projectId = "27bae5ba5219bcd64ddbf83113eabb30:d04e0431f97f90fae73b9d6ea99fc9746695bd11";
+ 		GameAnalytics.ConfigureUserId(MySandboxGame.ConfigDedicated.DedicatedId.ToString());

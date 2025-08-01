@@ -1,0 +1,31 @@
+--- a/VRage.Dedicated/VRage/Dedicated/ConfigForm.cs
++++ b/VRage.Dedicated/VRage/Dedicated/ConfigForm.cs
+@@ -1917,7 +1917,7 @@ public class ConfigForm : Form
+ 			fileOpen.Filter = "Configuration file (*.cfg)|*.cfg|All files (*.*)|*.*";
+ 			if (fileOpen.ShowDialog() == DialogResult.OK)
+ 			{
+-				BeginInvoke((MethodInvoker)delegate
++				BeginInvoke(delegate
+ 				{
+ 					onComplete.InvokeIfNotNull(new FileDialogEventArgs(fileOpen.FileName));
+ 				});
+@@ -1970,7 +1970,7 @@ public class ConfigForm : Form
+ 			fileOpen.Filter = "Configuration file (*.cfg)|*.cfg|All files (*.*)|*.*";
+ 			if (fileOpen.ShowDialog() == DialogResult.OK)
+ 			{
+-				BeginInvoke((MethodInvoker)delegate
++				BeginInvoke(delegate
+ 				{
+ 					onComplete.InvokeIfNotNull(new FileDialogEventArgs(fileOpen.FileName));
+ 				});
+--- a/VRage.Dedicated/VRage/Dedicated/Configurator/PluginManagementControl.cs
++++ b/VRage.Dedicated/VRage/Dedicated/Configurator/PluginManagementControl.cs
+@@ -302,7 +302,7 @@ public class PluginManagementControl : UserControl
+ 		{
+ 			if (fileOpen.ShowDialog() == DialogResult.OK)
+ 			{
+-				BeginInvoke((MethodInvoker)delegate
++				BeginInvoke(delegate
+ 				{
+ 					onComplete.InvokeIfNotNull(new FileDialogEventArgs(fileOpen.FileName));
+ 				});

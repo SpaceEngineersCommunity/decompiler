@@ -1,0 +1,18 @@
+--- a/Sandbox.Game/Sandbox/Game/Screens/MyFilterBool.cs
++++ b/Sandbox.Game/Sandbox/Game/Screens/MyFilterBool.cs
+@@ -16,7 +16,6 @@ public class MyFilterBool : IMyFilterOption
+ 				true => CheckStateEnum.Checked, 
+ 				false => CheckStateEnum.Unchecked, 
+ 				null => CheckStateEnum.Indeterminate, 
+-				_ => throw new InvalidBranchException(), 
+ 			};
+ 		}
+ 		set
+@@ -43,7 +42,6 @@ public class MyFilterBool : IMyFilterOption
+ 		false => "0", 
+ 		true => "1", 
+ 		null => "2", 
+-		_ => throw new InvalidBranchException(), 
+ 	};
+ 
+ 	public MyFilterBool(bool? value = null)

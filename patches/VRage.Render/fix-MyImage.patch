@@ -1,0 +1,116 @@
+--- a/VRage.Render/VRage/Render/Image/MyImage.cs
++++ b/VRage.Render/VRage/Render/Image/MyImage.cs
+@@ -1,13 +1,14 @@
++using SixLabors.ImageSharp;
++using SixLabors.ImageSharp.Advanced;
++using SixLabors.ImageSharp.Formats.Png;
++using SixLabors.ImageSharp.Memory;
++using SixLabors.ImageSharp.PixelFormats;
+ using System;
+ using System.Buffers;
+ using System.IO;
++using System.Linq;
+ using System.Runtime.CompilerServices;
+ using System.Runtime.InteropServices;
+-using SixLabors.ImageSharp;
+-using SixLabors.ImageSharp.Advanced;
+-using SixLabors.ImageSharp.Formats.Png;
+-using SixLabors.ImageSharp.PixelFormats;
+-using SixLabors.Memory;
+ using VRage.FileSystem;
+ using VRageMath;
+ 
+@@ -29,11 +30,11 @@ public static class MyImage
+ 
+ 	public static IMyImage Load(Stream stream, bool oneChannel, bool headerOnly = false, string debugName = null)
+ 	{
+-		IImageInfo imageInfo = SixLabors.ImageSharp.Image.Identify(stream);
++		ImageInfo imageInfo = SixLabors.ImageSharp.Image.Identify(stream);
+ 		stream.Position = 0L;
+ 		if (!oneChannel)
+ 		{
+-			oneChannel = imageInfo.MetaData.GetFormatMetaData(PngFormat.Instance).ColorType == PngColorType.Grayscale;
++			oneChannel = imageInfo.Metadata.GetPngMetadata().ColorType == PngColorType.Grayscale;
+ 		}
+ 		if (headerOnly)
+ 		{
+@@ -44,9 +45,9 @@ public static class MyImage
+ 			switch ((PngBitDepth)(byte)imageInfo.PixelType.BitsPerPixel)
+ 			{
+ 			case PngBitDepth.Bit8:
+-				return MyImage<byte>.Create<Gray8>(imageInfo);
++				return MyImage<byte>.Create<L8>(imageInfo);
+ 			case PngBitDepth.Bit16:
+-				return MyImage<ushort>.Create<Gray16>(imageInfo);
++				return MyImage<ushort>.Create<L16>(imageInfo);
+ 			}
+ 		}
+ 		else if (oneChannel)
+@@ -54,14 +55,14 @@ public static class MyImage
+ 			switch ((PngBitDepth)(byte)imageInfo.PixelType.BitsPerPixel)
+ 			{
+ 			case PngBitDepth.Bit8:
+-				return MyImage<byte>.Create<Gray8>(stream);
++				return MyImage<byte>.Create<L8>(stream);
+ 			case PngBitDepth.Bit16:
+-				return MyImage<ushort>.Create<Gray16>(stream);
++				return MyImage<ushort>.Create<L16>(stream);
+ 			}
+ 		}
+ 		else
+ 		{
+-			PngMetaData formatMetaData = imageInfo.MetaData.GetFormatMetaData(PngFormat.Instance);
++			PngMetadata formatMetaData = imageInfo.Metadata.GetPngMetadata();
+ 			if (formatMetaData.ColorType != PngColorType.Grayscale)
+ 			{
+ 				return MyImage<uint>.Create<Rgba32>(stream);
+@@ -69,9 +70,9 @@ public static class MyImage
+ 			switch (formatMetaData.BitDepth)
+ 			{
+ 			case PngBitDepth.Bit8:
+-				return MyImage<byte>.Create<Gray8>(stream);
++				return MyImage<byte>.Create<L8>(stream);
+ 			case PngBitDepth.Bit16:
+-				return MyImage<ushort>.Create<Gray16>(stream);
++				return MyImage<ushort>.Create<L16>(stream);
+ 			}
+ 		}
+ 		return null;
+@@ -89,7 +90,7 @@ public static class MyImage
+ 		return Load(stream, oneChannel, headerOnly: false, path);
+ 	}
+ 
+-	public unsafe static void Save<TPixel>(Stream stream, FileFormat format, IntPtr dataPointer, int srcPitch, Vector2I size, uint bytesPerPixel) where TPixel : struct, IPixel<TPixel>
++	public unsafe static void Save<TPixel>(Stream stream, FileFormat format, IntPtr dataPointer, int srcPitch, Vector2I size, uint bytesPerPixel) where TPixel : unmanaged, IPixel<TPixel>
+ 	{
+ 		TPixel[] array = new TPixel[size.X * size.Y];
+ 		Memory<TPixel> pixelMemory = new Memory<TPixel>(array);
+@@ -134,16 +135,16 @@ public class MyImage<TData> : IMyImage<TData>, IMyImage where TData : unmanaged
+ 
+ 	object IMyImage.Data => Data;
+ 
+-	public static MyImage<TData> Create<TImage>(string path) where TImage : struct, IPixel<TImage>
++	public static MyImage<TData> Create<TImage>(string path) where TImage : unmanaged, IPixel<TImage>
+ 	{
+ 		using Stream stream = MyFileSystem.OpenRead(path);
+ 		return Create<TImage>(stream);
+ 	}
+ 
+-	public static MyImage<TData> Create<TImage>(Stream stream) where TImage : struct, IPixel<TImage>
++	public static MyImage<TData> Create<TImage>(Stream stream) where TImage : unmanaged, IPixel<TImage>
+ 	{
+ 		using Image<TImage> image = SixLabors.ImageSharp.Image.Load<TImage>(stream);
+-		TData[] data = MemoryMarshal.Cast<TImage, TData>(image.GetPixelSpan()).ToArray();
++		TData[] data = MemoryMarshal.Cast<TImage, TData>(image.GetPixelMemoryGroup().Single().Span).ToArray();
+ 		return new MyImage<TData>
+ 		{
+ 			Size = new Vector2I(image.Width, image.Height),
+@@ -152,7 +153,7 @@ public class MyImage<TData> : IMyImage<TData>, IMyImage where TData : unmanaged
+ 		};
+ 	}
+ 
+-	public static MyImage<TData> Create<TImage>(IImageInfo image) where TImage : struct, IPixel<TImage>
++	public static MyImage<TData> Create<TImage>(ImageInfo image) where TImage : unmanaged, IPixel<TImage>
+ 	{
+ 		return new MyImage<TData>
+ 		{

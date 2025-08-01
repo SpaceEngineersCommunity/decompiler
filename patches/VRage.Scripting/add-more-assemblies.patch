@@ -1,0 +1,16 @@
+--- a/VRage.Scripting/VRage/Scripting/MyScriptCompiler.cs
++++ b/VRage.Scripting/VRage/Scripting/MyScriptCompiler.cs
+@@ -70,6 +70,13 @@ public class MyScriptCompiler
+ 	private MyScriptCompiler()
+ 	{
+ 		AddReferencedAssemblies(GetType().Assembly.Location, typeof(int).Assembly.Location, typeof(XmlEntity).Assembly.Location, typeof(HashSet<>).Assembly.Location, typeof(Dictionary<, >).Assembly.Location, typeof(Uri).Assembly.Location);
++		AddReferencedAssemblies(typeof(LinkedList<>).Assembly.Location);
++		AddReferencedAssemblies(typeof(System.Text.RegularExpressions.Regex).Assembly.Location);
++		AddReferencedAssemblies(typeof(Enumerable).Assembly.Location);
++		AddReferencedAssemblies(typeof(System.Collections.Concurrent.ConcurrentBag<>).Assembly.Location);
++		AddReferencedAssemblies(typeof(System.Timers.Timer).Assembly.Location);
++		AddReferencedAssemblies(typeof(System.Diagnostics.TraceEventType).Assembly.Location);
++		AddReferencedAssemblies(typeof(INotifyPropertyChanging).Assembly.Location);
+ 		AddImplicitInGameNamespacesFromTypes(typeof(object), typeof(StringBuilder), typeof(IEnumerable), typeof(IEnumerable<>), typeof(Enumerable));
+ 		AddImplicitTypeMappings(typeof(INotifyPropertyChanging), typeof(PropertyChangingEventHandler), typeof(PropertyChangingEventArgs), typeof(INotifyPropertyChanged), typeof(PropertyChangedEventHandler), typeof(PropertyChangedEventArgs));
+ 		AddUnblockableInGameExceptions(typeof(ScriptOutOfRangeException));

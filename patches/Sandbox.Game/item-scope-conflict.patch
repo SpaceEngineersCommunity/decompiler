@@ -1,0 +1,14 @@
+--- a/Sandbox.Game/Sandbox/Game/Entities/Blocks/MyLightingBlock.cs
++++ b/Sandbox.Game/Sandbox/Game/Entities/Blocks/MyLightingBlock.cs
+@@ -403,9 +403,9 @@ public abstract class MyLightingBlock : MyFunctionalBlock, Sandbox.ModAPI.IMyLig
+ 				float? num3 = null;
+ 				List<Sandbox.ModAPI.Ingame.IMyTerminalBlock> list = new List<Sandbox.ModAPI.Ingame.IMyTerminalBlock>();
+ 				item.FetchAllBlocks(list);
+-				foreach (Sandbox.ModAPI.Ingame.IMyTerminalBlock item in list)
++				foreach (Sandbox.ModAPI.Ingame.IMyTerminalBlock item_ in list)
+ 				{
+-					if (item is MyLightingBlock myLightingBlock)
++					if (item_ is MyLightingBlock myLightingBlock)
+ 					{
+ 						float val = (myLightingBlock.m_lightingLogic.IsReflector ? myLightingBlock.m_lightingLogic.ReflectorRadiusBounds.Min : myLightingBlock.m_lightingLogic.RadiusBounds.Min);
+ 						num = Math.Min(num, val);
