@@ -1,0 +1,55 @@
+name: build
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+    - master
+  pull_request:
+    branches:
+    - master
+  schedule:
+    - cron: '0 0 * * 0' # weekly on sundays at 00:00
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: checkout
+        uses: actions/checkout@v4
+
+      - name: setup dotnet
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 9
+
+      - name: dotnet build
+        run: |
+          for solution in */*.sln; do
+            dotnet build --configuration Release "$solution"
+          done
+
+      - name: set up python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '>= 3.11'
+
+      - name: set up python dependencies
+        run: |
+          pip install -r requirements.txt
+          pip install mypy
+          pip install pyformat
+
+      - name: python format and type check
+        run: |
+          exit=0
+          for file in *.py; do
+            format=$(pyformat "$file")
+            if [[ -n "$format" ]]; then
+              echo "$file is not well formatted, run: pyformat -i $file"
+              exit=1
+            fi
+          done
+          mypy --strict *.py || exit=1
+          exit $exit
