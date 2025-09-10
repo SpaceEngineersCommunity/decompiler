@@ -1,0 +1,31 @@
+--- a/Sandbox.Game/Sandbox/Engine/Analytics/MySpaceAnalytics.cs
++++ b/Sandbox.Game/Sandbox/Engine/Analytics/MySpaceAnalytics.cs
+@@ -403,6 +403,7 @@ public sealed class MySpaceAnalytics : MyAnalyticsManager
+ 
+ 	private void StartSession(bool firstTimeRun)
+ 	{
++		return; // disable analytics
+ 		if (!m_isSessionStarted)
+ 		{
+ 			if (m_hashedUserID == null)
+--- a/Sandbox.Game/Sandbox/Engine/Utils/MyFakes.cs
++++ b/Sandbox.Game/Sandbox/Engine/Utils/MyFakes.cs
+@@ -1353,7 +1353,7 @@ public static class MyFakes
+ 		ENABLE_WAIT_UNTIL_MULTIPLAYER_READY = true;
+ 		ENABLE_PRELOAD_CHARACTER_ANIMATIONS = true;
+ 		LOADING_STREAMING_TIMEOUT_ENABLED = true;
+-		ENABLE_MINIDUMP_SENDING = true;
++		ENABLE_MINIDUMP_SENDING = false;
+ 		COLLECT_SUSPEND_DUMPS = false;
+ 		USE_GPS_AS_FRIENDLY_SPAWN_LOCATIONS = false;
+ 		I_AM_READY_FOR_NEW_BLUEPRINT_SCREEN = true;
+--- a/Sandbox.Game/Sandbox/MyErrorReporter.cs
++++ b/Sandbox.Game/Sandbox/MyErrorReporter.cs
+@@ -288,6 +288,7 @@ public class MyErrorReporter
+ 
+ 	private static bool TrySendReport(string logName, string gameId, string email, string feedback, CrashInfo info, string reportType, IEnumerable<string> files = null)
+ 	{
++		return false; // disable bug reports sending
+ 		Dictionary<string, byte[]> dictionary = new Dictionary<string, byte[]>();
+ 		StringBuilder stringBuilder = new StringBuilder();
+ 		if (!string.IsNullOrWhiteSpace(email))

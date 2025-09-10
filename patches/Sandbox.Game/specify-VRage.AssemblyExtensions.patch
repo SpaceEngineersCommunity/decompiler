@@ -1,0 +1,11 @@
+--- a/Sandbox.Game/Sandbox/MyCommonProgramStartup.cs
++++ b/Sandbox.Game/Sandbox/MyCommonProgramStartup.cs
+@@ -237,7 +237,7 @@ public class MyCommonProgramStartup
+ 
+ 	public bool Check64Bit()
+ 	{
+-		if (!Environment.Is64BitProcess && AssemblyExtensions.TryGetArchitecture("SteamSDK.dll") == ProcessorArchitecture.Amd64)
++		if (!Environment.Is64BitProcess && VRage.AssemblyExtensions.TryGetArchitecture("SteamSDK.dll") == ProcessorArchitecture.Amd64)
+ 		{
+ 			string text = GameInfo.GameName + " cannot be started in 64-bit mode, ";
+ 			text = text + "because 64-bit version of .NET framework is not available or is broken." + Environment.NewLine + Environment.NewLine;

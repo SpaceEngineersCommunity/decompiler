@@ -1,0 +1,11 @@
+--- a/Sandbox.Game/Sandbox/Engine/Utils/MyFakes.cs
++++ b/Sandbox.Game/Sandbox/Engine/Utils/MyFakes.cs
+@@ -1233,7 +1233,7 @@ public static class MyFakes
+ 		ENABLE_MAIN_MENU_INVENTORY_SCENE = true;
+ 		ENABLE_IME = true;
+ 		ENABLE_MULTICORE_JIT = true;
+-		ENABLE_NGEN = true;
++		ENABLE_NGEN = false;
+ 		FORCE_CHARACTER_2D_SOUND = false;
+ 		TESTING_JUMPDRIVE = false;
+ 		TREE_MESH_FROM_MODEL = true;

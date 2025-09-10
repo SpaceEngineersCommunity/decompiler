@@ -1,0 +1,16 @@
+--- a/VRage.Library/VRage/FileSystem/MyFileSystem.cs
++++ b/VRage.Library/VRage/FileSystem/MyFileSystem.cs
+@@ -1,3 +1,4 @@
++using Microsoft.Win32;
+ using System;
+ using System.Collections.Generic;
+ using System.IO;
+@@ -15,7 +16,7 @@ public static class MyFileSystem
+ 
+ 	public static string ExePath = new FileInfo(m_mainAssembly.Location).DirectoryName;
+ 
+-	public static string RootPath = new FileInfo(ExePath).Directory?.FullName ?? Path.GetFullPath(ExePath);
++	public static string RootPath = (string)Registry.GetValue("HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\Steam App 244850", "InstallLocation", "");
+ 
+ 	private static string m_shadersBasePath;
+ 

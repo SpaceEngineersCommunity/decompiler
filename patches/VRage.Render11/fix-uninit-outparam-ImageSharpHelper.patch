@@ -1,0 +1,10 @@
+--- a/VRage.Render11/SharpDX/Toolkit/Graphics/ImageSharpHelper.cs
++++ b/VRage.Render11/SharpDX/Toolkit/Graphics/ImageSharpHelper.cs
+@@ -43,6 +43,7 @@ internal class ImageSharpHelper
+ 
+ 	private static bool BuildImageData(IMyImage image, out ImageDescription description, out GCHandle imageData)
+ 	{
++		imageData = new GCHandle();
+ 		if (image == null)
+ 		{
+ 			description = default(ImageDescription);

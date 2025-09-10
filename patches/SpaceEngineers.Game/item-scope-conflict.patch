@@ -1,0 +1,14 @@
+--- a/SpaceEngineers.Game/SpaceEngineers/Game/EntityComponents/Blocks/MyLightingComponent.cs
++++ b/SpaceEngineers.Game/SpaceEngineers/Game/EntityComponents/Blocks/MyLightingComponent.cs
+@@ -460,9 +460,9 @@ public class MyLightingComponent : MyUpdatingEntityComponent, IMyLightingLogicSy
+ 				float? num3 = null;
+ 				List<Sandbox.ModAPI.Ingame.IMyTerminalBlock> list = new List<Sandbox.ModAPI.Ingame.IMyTerminalBlock>();
+ 				item.FetchAllBlocks(list);
+-				foreach (Sandbox.ModAPI.Ingame.IMyTerminalBlock item in list)
++				foreach (Sandbox.ModAPI.Ingame.IMyTerminalBlock item_ in list)
+ 				{
+-					MyLightingComponent lightingComponent = GetLightingComponent(item);
++					MyLightingComponent lightingComponent = GetLightingComponent(item_);
+ 					if (lightingComponent != null)
+ 					{
+ 						MyLightingLogic lightingLogic = lightingComponent.m_lightingLogic;
