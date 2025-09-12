@@ -1,0 +1,12 @@
+--- a/VRage.Steam/VRage/Steam/MySteamService.cs
++++ b/VRage.Steam/VRage/Steam/MySteamService.cs
+@@ -348,7 +348,8 @@ internal class MySteamService : IDisposable, IMyGameService
+ 
+ 	public bool GetAuthSessionTicket(out uint ticketHandle, byte[] buffer, out uint length)
+ 	{
+-		HAuthTicket authSessionTicket = SteamUser.GetAuthSessionTicket(buffer, buffer.Length, out length);
++		SteamNetworkingIdentity identity = new SteamNetworkingIdentity();
++		HAuthTicket authSessionTicket = SteamUser.GetAuthSessionTicket(buffer, buffer.Length, out length, ref identity);
+ 		ticketHandle = (uint)authSessionTicket;
+ 		return authSessionTicket != HAuthTicket.Invalid;
+ 	}
