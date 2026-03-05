@@ -261,14 +261,14 @@ def decompile(projects: dict[str, str], netframework: str) -> None:
     # C# 7.0 (2017) .NET Framework 4.6.2
     # C# 7.1 (2017) .NET Framework 4.7
     # C# 7.2 (2017) .NET Framework 4.7.1
-    # C# 7.3 (2018) .NET Framework 4.7.2
+    # C# 7.3 (2018) .NET Framework 4.7.2 -> .NET Framework 4.8.1
     # C# 8.0 (2019) .NET Core 3.0/.NET Standard 2.1
-    # C# 9 (2020) .NET 5
-    # C# 10 (2021) .NET 6
-    # C# 11 (2022) .NET 7
-    # C# 12 (2023) .NET 8
-    # C# 13 (2024) .NET 9
-    # C# 14 (2025) .NET 10
+    # C# 9.0 (2020) .NET 5.0
+    # C# 10 (2021) .NET 6.0
+    # C# 11 (2022) .NET 7.0
+    # C# 12 (2023) .NET 8.0
+    # C# 13 (2024) .NET 9.0
+    # C# 14 (2025) .NET 10.0
     subprocess.run([
         'ilspycmd',
         '--disable-updatecheck',
