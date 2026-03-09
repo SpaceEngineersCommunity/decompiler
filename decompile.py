@@ -114,6 +114,8 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         '--patches', action=argparse.BooleanOptionalAction, default=True)
     parser.add_argument(
+        '--ignore-broken-patches', action=argparse.BooleanOptionalAction, default=True)
+    parser.add_argument(
         '--projects', action=argparse.BooleanOptionalAction, default=True)
     parser.add_argument(
         '--solution', action=argparse.BooleanOptionalAction, default=True)
@@ -156,7 +158,7 @@ def main() -> None:
         fixes()
 
     if args.patches:
-        patches(projects, game_dir)
+        patches(projects, game_dir, not args.ignore_broken_patches)
 
     if args.projects:
         logging.info('updating projects')
@@ -340,7 +342,7 @@ dotnet_diagnostic.WFO1000.severity = silent
                 f.write(buf.encode('utf-8'))
 
 
-def patches(projects: dict[str, str], game_dir: str) -> None:
+def patches(projects: dict[str, str], game_dir: str, check: bool) -> None:
     logging.info('apply patches')
 
     # extract types for network compatibility, then VRage/use-original-types.patch uses it
@@ -358,7 +360,7 @@ def patches(projects: dict[str, str], game_dir: str) -> None:
             continue
         logging.info('apply: %s/%s' % (project, patch))
         r = subprocess.run(['patch', '-p1', '--binary',
-                           '-f', '-s', '-i', filename])
+                           '-f', '-s', '-i', filename], check=check)
 
     for e in pathlib.Path('.').rglob('*.orig'):
         os.remove(e)
