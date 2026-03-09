@@ -1,0 +1,16 @@
+--- a/VRage.Library/VRage/Stats/MyStat.cs
++++ b/VRage.Library/VRage/Stats/MyStat.cs
+@@ -5,10 +5,10 @@ using VRage.Library.Utils;
+ 
+ namespace VRage.Stats;
+ 
+-internal class MyStat
++public class MyStat
+ {
+-	[StructLayout(LayoutKind.Explicit)]
+-	internal struct Value
++	[StructLayout(LayoutKind.Explicit)]
++	public struct Value
+ 	{
+ 		[FieldOffset(0)]
+ 		public float AsFloat;

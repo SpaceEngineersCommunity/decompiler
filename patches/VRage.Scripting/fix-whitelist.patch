@@ -23,15 +23,6 @@
  					}
  				}
  				if (flag)
-@@ -439,7 +447,7 @@ public class MyScriptWhitelist : IMyScriptBlacklist
- 		myWhitelistBatch.AllowMembers(MyWhitelistTarget.Both, typeof(ValueType).GetMethod("Equals"), typeof(ValueType).GetMethod("GetHashCode"), typeof(ValueType).GetMethod("ToString"));
- 		myWhitelistBatch.AllowMembers(MyWhitelistTarget.Both, typeof(Environment).GetProperty("CurrentManagedThreadId", BindingFlags.Static | BindingFlags.Public), typeof(Environment).GetProperty("NewLine", BindingFlags.Static | BindingFlags.Public), typeof(Environment).GetProperty("ProcessorCount", BindingFlags.Static | BindingFlags.Public));
- 		Type type = typeof(Type).Assembly.GetType("System.RuntimeType");
--		myWhitelistBatch.AllowMembers(MyWhitelistTarget.Both, type.GetMethod("op_Inequality"), type.GetMethod("GetFields", new Type[1] { typeof(BindingFlags) }));
-+		myWhitelistBatch.AllowMembers(MyWhitelistTarget.Both, type.GetMethod("GetFields", new Type[1] { typeof(BindingFlags) }));
- 		myWhitelistBatch.AllowMembers(MyWhitelistTarget.Both, (from m in AllDeclaredMembers(typeof(Delegate))
- 			where m.Name != "CreateDelegate"
- 			select m).ToArray());
 @@ -611,8 +619,9 @@ public class MyScriptWhitelist : IMyScriptBlacklist
  	private void Register(MyWhitelistTarget target, INamespaceSymbol symbol, Type type)
  	{

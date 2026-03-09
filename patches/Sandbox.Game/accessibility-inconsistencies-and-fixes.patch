@@ -1,14 +1,3 @@
---- b/Sandbox.Game/Sandbox/Game/Components/MyEntityStatComponent.cs
-+++ a/Sandbox.Game/Sandbox/Game/Components/MyEntityStatComponent.cs
-@@ -27,7 +27,7 @@ namespace Sandbox.Game.Components;
- public class MyEntityStatComponent : MyEntityComponentBase
- {
- 	[Serializable]
--	private struct StatInfo
-+	protected struct StatInfo
- 	{
- 
- 		public MyStringHash StatId;
 --- b/Sandbox.Game/Sandbox/Game/Entities/Blocks/MyContractBlock.cs
 +++ a/Sandbox.Game/Sandbox/Game/Entities/Blocks/MyContractBlock.cs
 @@ -55,7 +55,7 @@ public class MyContractBlock : MyFunctionalBlock, IMyConveyorEndpointBlock, IMyM
@@ -47,9 +36,9 @@
  	{
  
  		public int RewardMoney;
---- b/Sandbox.Game/Sandbox/Game/Entities/MyCubeBuilder.cs
-+++ a/Sandbox.Game/Sandbox/Game/Entities/MyCubeBuilder.cs
-@@ -63,7 +63,7 @@ namespace Sandbox.Game.Entities;
+--- a/Sandbox.Game/Sandbox/Game/Entities/MyCubeBuilder.cs
++++ b/Sandbox.Game/Sandbox/Game/Entities/MyCubeBuilder.cs
+@@ -61,7 +61,7 @@ namespace Sandbox.Game.Entities;
  public class MyCubeBuilder : MyBlockBuilderBase, IMyFocusHolder, IMyCubeBuilder
  {
  	[Serializable]
@@ -58,24 +47,24 @@
  	{
  
  		public Vector3D Position;
-@@ -87,7 +87,7 @@ public class MyCubeBuilder : MyBlockBuilderBase, IMyFocusHolder, IMyCubeBuilder
+@@ -88,7 +88,7 @@ public class MyCubeBuilder : MyBlockBuilderBase, IMyFocusHolder, IMyCubeBuilder
  	}
  
  	[Serializable]
--	private struct Author
-+	protected struct Author
+-	private struct Author(long entityId, long identityId)
++	protected struct Author(long entityId, long identityId)
  	{
  
- 		public long EntityId;
-@@ -102,7 +102,7 @@ public class MyCubeBuilder : MyBlockBuilderBase, IMyFocusHolder, IMyCubeBuilder
+ 		public long EntityId = entityId;
+@@ -97,7 +97,7 @@ public class MyCubeBuilder : MyBlockBuilderBase, IMyFocusHolder, IMyCubeBuilder
  	}
  
  	[Serializable]
--	private struct GridSpawnRequestData
-+	protected struct GridSpawnRequestData
+-	private struct GridSpawnRequestData(Author author, DefinitionIdBlit definition, BuildData position, bool instantBuild, bool forceStatic, MyCubeGrid.MyBlockVisuals visuals)
++	protected struct GridSpawnRequestData(Author author, DefinitionIdBlit definition, BuildData position, bool instantBuild, bool forceStatic, MyCubeGrid.MyBlockVisuals visuals)
  	{
  
- 		public Author Author;
+ 		public Author Author = author;
 --- b/Sandbox.Game/Sandbox/Game/Entities/MyCubeGrid.cs
 +++ a/Sandbox.Game/Sandbox/Game/Entities/MyCubeGrid.cs
 @@ -127,7 +127,7 @@ public class MyCubeGrid : MyEntity, IMyGridConnectivityTest, IMyEventProxy, IMyE
@@ -149,17 +138,17 @@
  	{
  
  		public MyTrashRemovalFlags Flags;
---- b/Sandbox.Game/Sandbox/Game/Gui/MyGuiScreenDebugNetwork.cs
-+++ a/Sandbox.Game/Sandbox/Game/Gui/MyGuiScreenDebugNetwork.cs
+--- a/Sandbox.Game/Sandbox/Game/Gui/MyGuiScreenDebugNetwork.cs
++++ b/Sandbox.Game/Sandbox/Game/Gui/MyGuiScreenDebugNetwork.cs
 @@ -58,7 +58,7 @@ internal class MyGuiScreenDebugNetwork : MyGuiScreenDebugBase
  	}
  
  	[Serializable]
--	private struct Layer
-+	protected struct Layer
+-	private struct Layer(BoundingBox bounds, List<Layer.Entity> entities, int pcu, bool enabled)
++	protected struct Layer(BoundingBox bounds, List<Layer.Entity> entities, int pcu, bool enabled)
  	{
  		[Serializable]
- 		public struct Entity
+ 		public struct Entity(long id, BoundingBoxD? bounds)
 --- b/Sandbox.Game/Sandbox/Game/Gui/MyTerminalInfoController.cs
 +++ a/Sandbox.Game/Sandbox/Game/Gui/MyTerminalInfoController.cs
 @@ -35,7 +35,7 @@ namespace Sandbox.Game.Gui;
@@ -219,8 +208,19 @@
  public class MySessionComponentTrash : MySessionComponentBase
  {
  	[Serializable]
--	private struct ForageableItemInfo : IEquatable<ForageableItemInfo>
-+	protected struct ForageableItemInfo : IEquatable<ForageableItemInfo>
+-	private struct ForageableItemInfo(int itemID, long sectorID, long planetID, BoundingBoxD worldAabb, Vector3D worldPos, TimeSpan removedAt) : IEquatable<ForageableItemInfo>
++	protected struct ForageableItemInfo(int itemID, long sectorID, long planetID, BoundingBoxD worldAabb, Vector3D worldPos, TimeSpan removedAt) : IEquatable<ForageableItemInfo>
  	{
  
- 		public int ItemID;
+ 		public int ItemID = itemID;
+--- a/Sandbox.Game/Sandbox/Game/Gui/MyGuiScreenDebugEconomy.cs
++++ b/Sandbox.Game/Sandbox/Game/Gui/MyGuiScreenDebugEconomy.cs
+@@ -20,7 +20,7 @@ namespace Sandbox.Game.Gui;
+ public class MyGuiScreenDebugEconomy : MyGuiScreenDebugBase
+ {
+ 	[Serializable]
+-	private struct MyStationDebugDrawStructure
++	protected struct MyStationDebugDrawStructure
+ 	{
+ 
+ 		public SerializableVector3D Start;

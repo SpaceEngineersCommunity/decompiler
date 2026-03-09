@@ -1,0 +1,50 @@
+--- a/Sandbox.Game/Sandbox/Engine/MyGeneralStats.cs
++++ b/Sandbox.Game/Sandbox/Engine/MyGeneralStats.cs
+@@ -69,7 +69,7 @@ public class MyGeneralStats
+ 
+ 		private Dictionary<string, int> m_blockValues = new Dictionary<string, int>();
+ 
+-		private string[] m_blockValuesOrder = new string[36]
++		private static string[] m_blockValuesOrder = new string[36]
+ 		{
+ 			"Srv", "Uav", "Read", "Debug", "Index", "Audio", "SrvUav", "Vertex", "Buffers", "Physics",
+ 			"Planets", "Systems", "Textures", "Indirect", "Constant", "RwTextures", "Dx11Render", "MeshBuffers", "FileTextures", "DepthStencil",
+--- a/Sandbox.Game/Sandbox/Game/Entities/MyParallelEntityUpdateOrchestrator.cs
++++ b/Sandbox.Game/Sandbox/Game/Entities/MyParallelEntityUpdateOrchestrator.cs
+@@ -34,7 +34,7 @@ public class MyParallelEntityUpdateOrchestrator : IMyUpdateOrchestrator
+ 
+ 		private int m_currentSetIndex = 0;
+ 
+-		private HashSet<IMyParallelUpdateable>.Enumerator m_enumerator = m_first.GetEnumerator();
++		private HashSet<IMyParallelUpdateable>.Enumerator m_enumerator = first.GetEnumerator();
+ 
+ 		public IMyParallelUpdateable Current => m_enumerator.Current;
+ 
+--- a/Sandbox.Game/Sandbox/Game/MyExplosionInfo.cs
++++ b/Sandbox.Game/Sandbox/Game/MyExplosionInfo.cs
+@@ -19,11 +19,11 @@ public struct MyExplosionInfo(float playerDamage, float damage, BoundingSphereD
+ 
+ 	public float StrengthImpulse = 0f;
+ 
+-	public MyEntity ExcludedEntity = (OwnerEntity = (HitEntity = null));
++	public MyEntity ExcludedEntity = null;
+ 
+-	public MyEntity OwnerEntity;
++	public MyEntity OwnerEntity = null;
+ 
+-	public MyEntity HitEntity;
++	public MyEntity HitEntity = null;
+ 
+ 	public MyExplosionFlags ExplosionFlags = MyExplosionFlags.CREATE_DEBRIS | MyExplosionFlags.AFFECT_VOXELS | MyExplosionFlags.APPLY_FORCE_AND_DAMAGE | MyExplosionFlags.CREATE_DECALS | MyExplosionFlags.CREATE_PARTICLE_EFFECT | MyExplosionFlags.APPLY_DEFORMATION;
+ 
+--- a/Sandbox.Game/Sandbox/Definitions/MyConsumableItemDefinition.cs
++++ b/Sandbox.Game/Sandbox/Definitions/MyConsumableItemDefinition.cs
+@@ -21,7 +21,7 @@ public class MyConsumableItemDefinition : MyUsableItemDefinition
+ 	{
+ 		public readonly string Name = name;
+ 
+-		public readonly MyStringHash NameHash = MyStringHash.GetOrCompute(Name);
++		public readonly MyStringHash NameHash = MyStringHash.GetOrCompute(name);
+ 
+ 		public readonly float Value = value;
+ 
